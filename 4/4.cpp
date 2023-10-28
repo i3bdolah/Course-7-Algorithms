@@ -21,7 +21,6 @@ void PrintTwoDimsArray(int arr[3][3], short rows, short cols) {
 	{
 		for (int j = 0; j < cols; j++)
 		{
-			//printf("% *d ", 3, arr[i][j]);
 			cout << setw(3) << arr[i][j] << " ";
 		}
 		cout << "\n";
