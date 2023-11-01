@@ -52,35 +52,47 @@ bool CheckExistInMatrix(int arr[3][3], short rows, short cols, int targetNum) {
 	return false;
 }
 
-void PrintIntersectedElements(int myArr[3][3], int myArr2[3][3], short rows, short cols) {
+int MaxInMatrix(int myArr[3][3], short rows, short cols) {
+	int temp = myArr[0][0];
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
 		{
-			if (CheckExistInMatrix(myArr2, 3, 3, myArr[i][j]))
-			{
-				cout << setw(3) << myArr[i][j];
+			if (myArr[i][j] > temp) {
+				temp = myArr[i][j];
 			}
 		}
-		cout << '\n';
 	}
+	return temp;
 }
 
+
+int MinInMatrix(int myArr[3][3], short rows, short cols) {
+	int temp = myArr[0][0];
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (myArr[i][j] < temp) {
+				temp = myArr[i][j];
+			}
+		}
+	}
+	return temp;
+}
 
 int main()
 {
 	srand((unsigned)time(NULL));
 
 	int myArr[3][3];
-	int myArr2[3][3];
 	FillTwoDimsArrayRandom(myArr, 3, 3);
-	FillTwoDimsArrayRandom(myArr2, 3, 3);
 
 	PrintMatrix(myArr, 3, 3);
 	cout << "______________________________" << endl;
-	PrintMatrix(myArr2, 3, 3);
 	cout << "\n\n";
-	PrintIntersectedElements(myArr, myArr2, 3, 3);
+	cout << "Max Number in Array is : " << MaxInMatrix(myArr, 3, 3);
 	cout << "\n\n";
-
+	cout << "Min Number in Array is : " << MinInMatrix(myArr, 3, 3);
+	cout << "\n\n";
 }

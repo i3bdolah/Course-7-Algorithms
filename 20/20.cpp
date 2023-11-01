@@ -1,6 +1,3 @@
-// 9.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <iomanip>
 using namespace std;
@@ -52,35 +49,40 @@ bool CheckExistInMatrix(int arr[3][3], short rows, short cols, int targetNum) {
 	return false;
 }
 
-void PrintIntersectedElements(int myArr[3][3], int myArr2[3][3], short rows, short cols) {
+bool isPalindrome(int myArr[3][3], short rows, short cols) {
 	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < cols; j++)
+		for (int j = 0; j < cols / 2; j++)
 		{
-			if (CheckExistInMatrix(myArr2, 3, 3, myArr[i][j]))
+			if (myArr[i][j] != myArr[i][cols - 1 - j])
 			{
-				cout << setw(3) << myArr[i][j];
+				return false;
 			}
 		}
-		cout << '\n';
 	}
+	return true;
 }
 
+void PalindromeMsg(bool status) {
+	if (status)
+	{
+		cout << "Yes: The Matrix is Palindrome.\n\n";
+	}
+	else
+	{
+		cout << "No: The Matrix is NOT Palindrome.\n\n";
+	}
+}
 
 int main()
 {
 	srand((unsigned)time(NULL));
 
-	int myArr[3][3];
-	int myArr2[3][3];
-	FillTwoDimsArrayRandom(myArr, 3, 3);
-	FillTwoDimsArrayRandom(myArr2, 3, 3);
+	int myArr[3][3] = { {0,0,0},{1,1,1},{0,0,0} };
+	//FillTwoDimsArrayRandom(myArr, 3, 3);
 
 	PrintMatrix(myArr, 3, 3);
 	cout << "______________________________" << endl;
-	PrintMatrix(myArr2, 3, 3);
 	cout << "\n\n";
-	PrintIntersectedElements(myArr, myArr2, 3, 3);
-	cout << "\n\n";
-
+	PalindromeMsg(isPalindrome(myArr, 3, 3));
 }
