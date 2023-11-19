@@ -1,0 +1,145 @@
+#include <iostream>
+#include <string>
+#include <vector> 
+#include <fstream> 
+#include <iomanip>
+using namespace std;
+
+const string FilePath = "C:\\Users\\Abdullah\\Desktop\\Clients-Table.txt";
+
+struct stBankAccount
+{
+	string bank_acc;
+	string pin_code;
+	string name;
+	string phone;
+	double acc_balance = 0;
+};
+
+stBankAccount NotFoundClient() {
+	stBankAccount temp;
+
+	temp.bank_acc = "NOT FOUND";
+	temp.pin_code = "NOT FOUND";
+	temp.name = "NOT FOUND";
+	temp.phone = "NOT FOUND";
+	temp.acc_balance = 0;
+
+	return temp;
+}
+
+string EnterString(string msg) {
+	string temp;
+	cout << msg;
+	getline(cin, temp);
+
+	return temp;
+}
+
+vector <string> SplitToVector(string sentence, string seperator = "#//#") {
+	vector <string> wordsSeperated;
+	int pos = 0;
+	string strTemp;
+
+	while ((pos = sentence.find(seperator)) != string::npos)
+	{
+		strTemp = sentence.substr(0, pos);
+		if (strTemp != seperator)
+		{
+			wordsSeperated.push_back(strTemp.substr(0, (pos)));
+		}
+
+		sentence.erase(0, pos + seperator.length());
+	}
+
+	if (sentence != "" && sentence != seperator)
+	{
+		wordsSeperated.push_back(sentence);
+	}
+
+	return wordsSeperated;
+}
+
+stBankAccount LineToClientStructure(string line) {
+	vector <string> splittedLine;
+	stBankAccount readyClient;
+	splittedLine = SplitToVector(line);
+
+	readyClient.bank_acc = splittedLine[0];
+	readyClient.pin_code = splittedLine[1];
+	readyClient.name = splittedLine[2];
+	readyClient.phone = splittedLine[3];
+	readyClient.acc_balance = stod(splittedLine[4]);
+
+	return readyClient;
+}
+
+vector <stBankAccount> LoadDataFromFile(string FilePath) {
+	vector <stBankAccount> vClients;
+	fstream MyFile;
+
+	MyFile.open(FilePath, ios::in);
+
+	if (MyFile.is_open()) {
+		string line;
+		stBankAccount client1;
+		while (getline(MyFile, line))
+		{
+			client1 = LineToClientStructure(line);
+			vClients.push_back(client1);
+		}
+		MyFile.close();
+	}
+	return vClients;
+}
+
+void HugeLine() {
+	cout << "____________________________________________________________________________________________________" << endl;
+}
+
+void PrintHeaders() {
+	HugeLine();
+	cout << "\n| " << left << setw(20) << "Account Number";
+	cout << "| " << left << setw(20) << "Pin Code";
+	cout << "| " << left << setw(20) << "Client Name";
+	cout << "| " << left << setw(20) << "Phone";
+	cout << "| " << left << setw(20) << "Balance" << endl;
+	HugeLine();
+}
+
+void PrintRows(stBankAccount client) {
+	cout << "| " << left << setw(20) << client.bank_acc;
+	cout << "| " << left << setw(20) << client.pin_code;
+	cout << "| " << left << setw(20) << client.name;
+	cout << "| " << left << setw(20) << client.phone;
+	cout << "| " << left << setw(20) << client.acc_balance << endl;
+	HugeLine();
+}
+
+void PrintImportedLines(stBankAccount StructuresFromFile) {
+	PrintHeaders();
+	PrintRows(StructuresFromFile);
+}
+
+stBankAccount SearchInClients(vector <stBankAccount> StructuresFromFile, string AccountNum) {
+	for (stBankAccount& structure : StructuresFromFile)
+	{
+		if (structure.bank_acc == AccountNum)
+		{
+			return structure;
+		}
+	}
+	return NotFoundClient();
+}
+
+void FindClient() {
+	string AccountNum = EnterString("Enter The Account Number : ");
+	vector <stBankAccount> StructuresFromFile = LoadDataFromFile(FilePath);
+	stBankAccount TheClient = SearchInClients(StructuresFromFile, AccountNum);
+	PrintImportedLines(TheClient);
+}
+
+int main()
+{
+	FindClient();
+}
