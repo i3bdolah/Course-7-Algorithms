@@ -215,7 +215,7 @@ void UpdateAndPrintTheClient(vector <stBankAccount>& StructuresFromFile, string 
 }
 
 // Function to delete a client
-void DeleteClient() {
+void UpdateClient() {
 	char isContinued;
 	do
 	{
@@ -236,5 +236,5 @@ void DeleteClient() {
 // Main function
 int main()
 {
-	DeleteClient();
+	UpdateClient();
 }
